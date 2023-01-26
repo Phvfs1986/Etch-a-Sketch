@@ -6,23 +6,25 @@ let container = document.getElementById('container');
 let btnColors = document.getElementById('btn-colors');
 
 let draw = document.createElement('button');
+let clearBoard = document.createElement('button');
 let drawRandom = document.createElement('button'); 
 let drawBlack = document.createElement('button');
 
 draw.textContent = 'Draw Squares';
-draw.style.padding = '20px';
 draw.className = 'draw-button';
 buttonsContainer.appendChild(draw);
 
+clearBoard.textContent = 'Clear';
+clearBoard.className = 'clear-button';
+buttonsContainer.appendChild(clearBoard)
+
 drawBlack.textContent = 'Black';
-drawBlack.style.padding = '20px';
 drawBlack.style.backgroundColor = 'black';
 drawBlack.style.color = 'white';
 drawBlack.className = 'Black-button';
 btnColors.appendChild(drawBlack);
 
 drawRandom.textContent = 'Random';
-drawRandom.style.padding = '20px';
 drawRandom.className = 'rnd-colors-button';
 btnColors.appendChild(drawRandom);
 
@@ -38,6 +40,29 @@ repeat(16);
 draw.addEventListener('click', e => {(
     repeat(prompt('How many squares?')
 ))});
+
+clearBoard.addEventListener ('click', e => {(
+    clear()
+)});
+
+let shiftState = null;
+
+document.onkeydown = function(e) {
+    if (e.key == 'Shift'){
+        shiftState = true;
+    }
+}
+document.onkeyup = function(e) {
+    if (e.key == 'Shift'){
+        shiftState = false;
+    }
+}
+
+// container.addEventListener ('mousedown', e => {
+//     if (shiftState) {
+//         e.target.style.backgroundColor = 'white';
+//     }
+// });
 
 drawRandom.addEventListener('click', e => {(
     addEvent(elements, randomizeColors())
@@ -76,8 +101,28 @@ function repeat(number) {
 }
 function addEvent(elements, color) {
     for (let element of elements) {
-        element.addEventListener('mouseover', e => {
-            e.target.style.backgroundColor = color;
+        element.addEventListener('mousedown', e => {
+            if (shiftState) {
+                e.target.style.backgroundColor = 'white';
+            }
+            else {
+                e.target.style.backgroundColor = color;
+            }
         })
+        element.addEventListener('mouseenter', e => {
+            if (e.buttons == 1) {
+                if (shiftState) {
+                    e.target.style.backgroundColor = 'white';
+                }
+                else {
+                    e.target.style.backgroundColor = color;
+                }
+            }
+        })
+    }
+}
+function clear() {
+    for (let element of elements) {
+        element.style.backgroundColor = 'white';
     }
 }
