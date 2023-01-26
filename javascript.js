@@ -27,6 +27,7 @@ function randomGen() {
     return Math.floor(Math.random() * 255);
 }
 function repeat(number) {
+    container.innerHTML = '';
     if (number > 100) {
         alert('Maximum number of squares is 100');
     }
@@ -37,11 +38,20 @@ function repeat(number) {
             cell.className = 'cell';
             cell.style.height = 'auto';
             cell.style.width = 'auto';
-            cell.style.textAlign = 'center'; 
-            cell.style.backgroundColor = `rgb(${randomGen()}, ${randomGen()}, ${randomGen()})`;
+            cell.style.textAlign = 'center';
+            //cell.style.backgroundColor = `rgb(${randomGen()}, ${randomGen()}, ${randomGen()})`;
+            cell.style.backgroundColor = 'black';
             container.appendChild(cell);
         }
     }
+    let elements = document.getElementsByClassName('cell');
+    addEvent(elements);
 }
-console.log(randomGen());
+function addEvent(elements) {
+    for (let element of elements) {
+        element.addEventListener('mouseover', e => {
+            e.target.style.backgroundColor = 'white';
+        })
+    }
+}
 repeat(16);
